@@ -1,0 +1,43 @@
+.components {
+  text-align: center;
+  font-family: Arial, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+}
+
+.logo {
+  position: absolute;
+  left: 17px;
+  max-height: 80px;
+  width: auto; 
+}
+
+.title {
+  /* flex: 1;
+  text-align: center; */
+  margin: 0;
+  font-size: 3.2em;
+  padding: 0 50px; /* Add padding to prevent overlap */
+  /* text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); */
+  font-family: "Gill Sans", sans-serif;
+  font-weight: 500;
+}
+
+@media (max-width: 600px) {
+  .header {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .logo {
+    position: relative;
+    left: 0;
+    margin-bottom: 10px; 
+  }
+
+  .title {
+    padding: 0 50px; /* Add padding to prevent overlap */
+  }
+}
