@@ -1,0 +1,70 @@
+.components {
+  text-align: center;
+  font-family: Arial, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+}
+
+.logo {
+  position: absolute;
+  left: 17px;
+  max-height: 80px;
+  width: auto; 
+}
+
+.title {
+  /* flex: 1;
+  text-align: center; */
+  margin: 0;
+  font-size: 3.2em;
+  padding: 0 50px; /* Add padding to prevent overlap */
+  /* text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); */
+  font-family: "Gill Sans", sans-serif;
+  font-weight: 500;
+}
+
+@media (max-width: 600px) {
+  .header {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .logo {
+    position: relative;
+    left: 0;
+    margin-bottom: 10px; 
+  }
+
+  .title {
+    padding: 0 50px; /* Add padding to prevent overlap */
+  }
+}
+
+.table-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.centered-table {
+  border-collapse: collapse;
+  width: 80%; /* Adjust the width as needed */
+}
+
+.cell {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center; /* Center align text within each cell */
+  margin: 5px; /* Add some margin between cells */
+}
+
+th {
+  background-color: #f2f2f2; /* Light grey background for header */
+}
+
+tr:hover {
+  background-color: #f1f1f1; /* Add a light grey color on hover */
+}
+

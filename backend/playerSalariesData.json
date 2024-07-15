@@ -1,0 +1,482 @@
+[   
+    {
+        "place": 1,
+        "player": "Scottie Scheffler",
+        "events": 23,
+        "salary": "$21,014,342",
+        "wins": 2,
+        "rank": 1
+    },
+    {
+        "place": 2,
+        "player": "Jon Rahm",
+        "events": 20,
+        "salary": "$16,522,608",
+        "wins": 4,
+        "rank": 3
+    },
+    {
+        "place": 3,
+        "player": "Viktor Hovland",
+        "events": 23,
+        "salary": "$14,112,234",
+        "wins": 2,
+        "rank": 4
+    },
+    {
+        "place": 4,
+        "player": "Rory McIlroy",
+        "events": 18,
+        "salary": "$13,921,008",
+        "wins": 2,
+        "rank": 2
+    },
+    {
+        "place": 5,
+        "player": "Max Homa",
+        "events": 25,
+        "salary": "$10,761,516",
+        "wins": 2,
+        "rank": 8
+    },
+    {
+        "place": 6,
+        "player": "Wyndham Clark",
+        "events": 28,
+        "salary": "$10,757,489",
+        "wins": 2,
+        "rank": 7
+    },
+    {
+        "place": 7,
+        "player": "Patrick Cantlay",
+        "events": 21,
+        "salary": "$10,372,998",
+        "wins": 0,
+        "rank": 6
+    },
+    {
+        "place": 8,
+        "player": "Brian Harman",
+        "events": 28,
+        "salary": "$9,175,261",
+        "wins": 1,
+        "rank": 10
+    },
+    {
+        "place": 9,
+        "player": "Keegan Bradley",
+        "events": 24,
+        "salary": "$9,010,040",
+        "wins": 2,
+        "rank": 15
+    },
+    {
+        "place": 10,
+        "player": "Xander Schauffele",
+        "events": 23,
+        "salary": "$8,459,066",
+        "wins": 0,
+        "rank": 5
+    },
+    {
+        "place": 11,
+        "player": "Tyrrell Hatton",
+        "events": 21,
+        "salary": "$8,336,913",
+        "wins": 0,
+        "rank": 17
+    },
+    {
+        "place": 12,
+        "player": "Matt Fitzpatrick",
+        "events": 23,
+        "salary": "$8,144,543",
+        "wins": 1,
+        "rank": 9
+    },
+    {
+        "place": 13,
+        "player": "Rickie Fowler",
+        "events": 26,
+        "salary": "$7,864,161",
+        "wins": 1,
+        "rank": 31
+    },
+    {
+        "place": 14,
+        "player": "Tom Kim",
+        "events": 27,
+        "salary": "$7,774,917",
+        "wins": 2,
+        "rank": 16
+    },
+    {
+        "place": 15,
+        "player": "Collin Morikawa",
+        "events": 25,
+        "salary": "$7,573,198",
+        "wins": 1,
+        "rank": 14
+    },
+    {
+        "place": 16,
+        "player": "Sahith Theegala",
+        "events": 31,
+        "salary": "$7,284,670",
+        "wins": 1,
+        "rank": 21
+    },
+    {
+        "place": 17,
+        "player": "Jordan Spieth",
+        "events": 22,
+        "salary": "$7,240,044",
+        "wins": 0,
+        "rank": 13
+    },
+    {
+        "place": 18,
+        "player": "Sam Burns",
+        "events": 26,
+        "salary": "$7,139,049",
+        "wins": 1,
+        "rank": 18
+    },
+    {
+        "place": 19,
+        "player": "Jason Day",
+        "events": 24,
+        "salary": "$6,922,758",
+        "wins": 1,
+        "rank": 19
+    },
+    {
+        "place": 20,
+        "player": "Kurt Kitayama",
+        "events": 25,
+        "salary": "$6,840,062",
+        "wins": 1,
+        "rank": 35
+    },
+    {
+        "place": 21,
+        "player": "Denny McCarthy",
+        "events": 30,
+        "salary": "$6,760,011",
+        "wins": 0,
+        "rank": 46
+    },
+    {
+        "place": 22,
+        "player": "Sungjae Im",
+        "events": 31,
+        "salary": "$6,665,921",
+        "wins": 0,
+        "rank": 33
+    },
+    {
+        "place": 23,
+        "player": "Tommy Fleetwood",
+        "events": 21,
+        "salary": "$6,510,641",
+        "wins": 0,
+        "rank": 12
+    },
+    {
+        "place": 24,
+        "player": "Lucas Glover",
+        "events": 30,
+        "salary": "$6,399,295",
+        "wins": 2,
+        "rank": 38
+    },
+    {
+        "place": 25,
+        "player": "Russell Henley",
+        "events": 25,
+        "salary": "$6,332,282",
+        "wins": 1,
+        "rank": 30
+    },
+    {
+        "place": 26,
+        "player": "Nick Taylor",
+        "events": 30,
+        "salary": "$6,242,461",
+        "wins": 1,
+        "rank": 28
+    },
+    {
+        "place": 27,
+        "player": "Tony Finau",
+        "events": 24,
+        "salary": "$5,867,652",
+        "wins": 2,
+        "rank": 24
+    },
+    {
+        "place": 28,
+        "player": "Harris English",
+        "events": 30,
+        "salary": "$5,600,688",
+        "wins": 0,
+        "rank": 36
+    },
+    {
+        "place": 29,
+        "player": "Corey Conners",
+        "events": 25,
+        "salary": "$5,545,721",
+        "wins": 1,
+        "rank": 50
+    },
+    {
+        "place": 30,
+        "player": "Emiliano Grillo",
+        "events": 33,
+        "salary": "$5,476,303",
+        "wins": 1,
+        "rank": 40
+    },
+    {
+        "place": 31,
+        "player": "Eric Cole",
+        "events": 37,
+        "salary": "$5,457,030",
+        "wins": 0,
+        "rank": 37
+    },
+    {
+        "place": 32,
+        "player": "Si Woo Kim",
+        "events": 30,
+        "salary": "$5,397,030",
+        "wins": 1,
+        "rank": 51
+    },
+    {
+        "place": 33,
+        "player": "Cameron Young",
+        "events": 24,
+        "salary": "$5,392,961",
+        "wins": 0,
+        "rank": 23
+    },
+    {
+        "place": 34,
+        "player": "Sepp Straka",
+        "events": 28,
+        "salary": "$5,287,575",
+        "wins": 1,
+        "rank": 25
+    },
+    {
+        "place": 35,
+        "player": "Taylor Moore",
+        "events": 31,
+        "salary": "$5,077,210",
+        "wins": 1,
+        "rank": 60
+    },
+    {
+        "place": 36,
+        "player": "Cam Davis",
+        "events": 29,
+        "salary": "$5,001,208",
+        "wins": 0,
+        "rank": 53
+    },
+    {
+        "place": 37,
+        "player": "Adam Schenk",
+        "events": 36,
+        "salary": "$4,987,134",
+        "wins": 0,
+        "rank": 52
+    },
+    {
+        "place": 38,
+        "player": "Adam Svensson",
+        "events": 35,
+        "salary": "$4,844,402",
+        "wins": 1,
+        "rank": 61
+    },
+    {
+        "place": 39,
+        "player": "Tom Hoge",
+        "events": 33,
+        "salary": "$4,723,609",
+        "wins": 0,
+        "rank": 55
+    },
+    {
+        "place": 40,
+        "player": "Adam Hadwin",
+        "events": 28,
+        "salary": "$4,714,419",
+        "wins": 0,
+        "rank": 45
+    },
+    {
+        "place": 41,
+        "player": "Justin Rose",
+        "events": 20,
+        "salary": "$4,635,120",
+        "wins": 1,
+        "rank": 47
+    },
+    {
+        "place": 42,
+        "player": "Andrew Putnam",
+        "events": 33,
+        "salary": "$4,459,263",
+        "wins": 0,
+        "rank": 64
+    },
+    {
+        "place": 43,
+        "player": "Mackenzie Hughes",
+        "events": 30,
+        "salary": "$4,318,591",
+        "wins": 1,
+        "rank": 74
+    },
+    {
+        "place": 44,
+        "player": "Chris Kirk",
+        "events": 29,
+        "salary": "$4,150,251",
+        "wins": 1,
+        "rank": 26
+    },
+    {
+        "place": 45,
+        "player": "Brendon Todd",
+        "events": 31,
+        "salary": "$3,935,870",
+        "wins": 0,
+        "rank": 62
+    },
+    {
+        "place": 46,
+        "player": "Hideki Matsuyama",
+        "events": 26,
+        "salary": "$3,874,772",
+        "wins": 0,
+        "rank": 20
+    },
+    {
+        "place": 47,
+        "player": "Matt Kuchar",
+        "events": 27,
+        "salary": "$3,840,222",
+        "wins": 0,
+        "rank": 72
+    },
+    {
+        "place": 48,
+        "player": "Seamus Power",
+        "events": 26,
+        "salary": "$3,792,807",
+        "wins": 1,
+        "rank": 104
+    },
+    {
+        "place": 49,
+        "player": "Lee Hodges",
+        "events": 34,
+        "salary": "$3,749,468",
+        "wins": 1,
+        "rank": 69
+    },
+    {
+        "place": 50,
+        "player": "J.T. Poston",
+        "events": 31,
+        "salary": "$3,699,409",
+        "wins": 0,
+        "rank": 39
+    },
+    {
+        "place": 51,
+        "player": "Beau Hossler",
+        "events": 34,
+        "salary": "$3,586,109",
+        "wins": 0,
+        "rank": 63
+    },
+    {
+        "place": 52,
+        "player": "Justin Thomas",
+        "events": 21,
+        "salary": "$3,566,403",
+        "wins": 0,
+        "rank": 22
+    },
+    {
+        "place": 53,
+        "player": "Adam Scott",
+        "events": 19,
+        "salary": "$3,329,394",
+        "wins": 0,
+        "rank": 48
+    },
+    {
+        "place": 54,
+        "player": "Byeong Hun An",
+        "events": 31,
+        "salary": "$3,231,758",
+        "wins": 0,
+        "rank": 43
+    },
+    {
+        "place": 55,
+        "player": "Ludvig Aberg",
+        "events": 13,
+        "salary": "$3,144,994",
+        "wins": 1,
+        "rank": 11
+    },
+    {
+        "place": 56,
+        "player": "Alex Smalley",
+        "events": 33,
+        "salary": "$3,128,514",
+        "wins": 0,
+        "rank": 102
+    },
+    {
+        "place": 57,
+        "player": "Taylor Montgomery",
+        "events": null,
+        "salary": "$3,079,376",
+        "wins": null,
+        "rank": 88
+    },
+    {
+        "place": 58,
+        "player": "Justin Suh",
+        "events": 35,
+        "salary": "$3,075,821",
+        "wins": 0,
+        "rank": 83
+    },
+    {
+        "place": 59,
+        "player": "Keith Mitchell",
+        "events": 30,
+        "salary": "$3,062,483",
+        "wins": 0,
+        "rank": 73
+    },
+    {
+        "place": 60,
+        "player": "J.J. Spaun",
+        "events": 32,
+        "salary": "$3,060,779",
+        "wins": 0,
+        "rank": 113
+    }
+]
