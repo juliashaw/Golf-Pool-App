@@ -15,12 +15,9 @@
 }
 
 .title {
-  /* flex: 1;
-  text-align: center; */
   margin: 0;
   font-size: 3.2em;
-  padding: 0 50px; /* Add padding to prevent overlap */
-  /* text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); */
+  padding: 0 50px; 
   font-family: "Gill Sans", sans-serif;
   font-weight: 500;
 }
@@ -38,7 +35,7 @@
   }
 
   .title {
-    padding: 0 50px; /* Add padding to prevent overlap */
+    padding: 0 50px; 
   }
 }
 
@@ -50,21 +47,35 @@
 
 .centered-table {
   border-collapse: collapse;
-  width: 80%; /* Adjust the width as needed */
+  width: 85%; 
+  min-width: 400px;
 }
 
 .cell {
   border: 1px solid #ddd;
   padding: 8px;
-  text-align: center; /* Center align text within each cell */
-  margin: 5px; /* Add some margin between cells */
+  text-align: center; 
+  margin: 5px; 
 }
 
 th {
-  background-color: #f2f2f2; /* Light grey background for header */
+  background-color: #f2f2f2; 
 }
 
 tr:hover {
-  background-color: #f1f1f1; /* Add a light grey color on hover */
+  background-color: #f1f1f1; 
+}
+
+.dropdownMenu {
+  font-family: "Gill Sans", sans-serif;
+}
+
+.tabTitle {
+  padding-top: 15px;
+}
+
+.eventsPage {
+  padding-left: 10%;
+  padding-right: 10%;
 }
 

@@ -1,0 +1,524 @@
+[
+      {
+        "team_name": "Baechler 1",
+        "players": {
+          "Viktor Hovland": 20.0,
+          "Rory McIlroy": 40.0,
+          "Jason Day": 6.5
+        },
+        "total_points": 66.5
+      },
+      {
+        "team_name": "Baechler 2",
+        "players": {
+          "Patrick Cantlay": 8.5,
+          "Jordan Spieth": 0.3,
+          "Tommy Fleetwood": 19.7,
+          "Hideki Matsuyama": 12.0,
+          "Justin Thomas": 7.5,
+          "Adam Scott": 0.0
+        },
+        "total_points": 48.0
+      },
+      {
+        "team_name": "B-Rogie",
+        "players": {
+          "Patrick Cantlay": 8.5,
+          "Xander Schauffele": 71.8,
+          "J.T. Poston": 4.5,
+          "Harris English": 0.0,
+          "Justin Thomas": 7.5,
+          "Ludvig Aberg": 30.5
+        },
+        "total_points": 122.8
+      },
+      {
+        "team_name": "Debbie Nowak",
+        "players": {
+          "Scottie Scheffler": 112.0,
+          "Tommy Fleetwood": 19.7,
+          "Hideki Matsuyama": 12.0,
+          "Ludvig Aberg": 30.5
+        },
+        "total_points": 174.2
+      },
+      {
+        "team_name": "Steve Nowak",
+        "players": {
+          "Sungjae Im": 6.8,
+          "Cam Davis": 0.0,
+          "Adam Svensson": 0.0,
+          "Adam Hadwin": 5.5,
+          "Chris Kirk": 0.5,
+          "Byeong Hun An": 17.0,
+          "Ludvig Aberg": 30.5,
+          "Justin Suh": 0.0
+        },
+        "total_points": 60.3
+      },
+      {
+        "team_name": "Katie Caesar",
+        "players": {
+          "Tom Kim": 0.0,
+          "Collin Morikawa": 38.7,
+          "Si Woo Kim": 9.0,
+          "Mackenzie Hughes": 13.0,
+          "Justin Thomas": 7.5,
+          "Ludvig Aberg": 30.5,
+          "Taylor Montgomery": 0.0
+        },
+        "total_points": 98.7
+      },
+      {
+        "team_name": "Chris de Ruiter",
+        "players": {
+          "Keegan Bradley": 11.0,
+          "Sahith Theegala": 19.5,
+          "Tony Finau": 8.0,
+          "Corey Conners": 0.0,
+          "Justin Thomas": 7.5,
+          "Ludvig Aberg": 30.5
+        },
+        "total_points": 76.5
+      },
+      {
+        "team_name": "Doug's Disasters 1",
+        "players": {
+          "Viktor Hovland": 20.0,
+          "Xander Schauffele": 71.8,
+          "Jordan Spieth": 0.3,
+          "Taylor Moore": 8.0
+        },
+        "total_points": 100.1
+      },
+      {
+        "team_name": "Doug's Disasters 2",
+        "players": {
+          "Patrick Cantlay": 8.5,
+          "Keegan Bradley": 11.0,
+          "Sungjae Im": 6.8,
+          "Tony Finau": 8.0,
+          "Taylor Montgomery": 0.0
+        },
+        "total_points": 34.3
+      },
+      {
+        "team_name": "Doug's Disasters 3",
+        "players": {
+          "Keegan Bradley": 11.0,
+          "Sungjae Im": 6.8,
+          "Tommy Fleetwood": 19.7,
+          "Lucas Glover": 0.0,
+          "Nick Taylor": 1.0
+        },
+        "total_points": 38.5
+      },
+      {
+        "team_name": "Doug's Disasters 4",
+        "players": {
+          "Xander Schauffele": 71.8,
+          "Collin Morikawa": 38.7,
+          "Sahith Theegala": 19.5,
+          "Sam Burns": 0.0,
+          "Andrew Putnam": 1.5
+        },
+        "total_points": 131.5
+      },
+      {
+        "team_name": "Jim F1",
+        "players": {
+          "Scottie Scheffler": 112.0,
+          "Patrick Cantlay": 8.5,
+          "Adam Scott": 0.0
+        },
+        "total_points": 120.5
+      },
+      {
+        "team_name": "Jim F2",
+        "players": {
+          "Jon Rahm": 0.0,
+          "Xander Schauffele": 71.8,
+          "Tony Finau": 8.0,
+          "Justin Thomas": 7.5
+        },
+        "total_points": 87.3
+      },
+      {
+        "team_name": "Brian Shaw 1",
+        "players": {
+          "Rory McIlroy": 40.0,
+          "Tommy Fleetwood": 19.7,
+          "Cameron Young": 14.0,
+          "Hideki Matsuyama": 12.0,
+          "Justin Thomas": 7.5
+        },
+        "total_points": 93.2
+      },
+      {
+        "team_name": "Brian Shaw 2",
+        "players": {
+          "Viktor Hovland": 20.0,
+          "Collin Morikawa": 38.7,
+          "Jordan Spieth": 0.3,
+          "Tony Finau": 8.0
+        },
+        "total_points": 67.0
+      },
+      {
+        "team_name": "Birdie Butter 1",
+        "players": {
+          "Patrick Cantlay": 8.5,
+          "Tommy Fleetwood": 19.7,
+          "Sepp Straka": 11.5,
+          "Hideki Matsuyama": 12.0,
+          "Justin Thomas": 7.5,
+          "Ludvig Aberg": 30.5
+        },
+        "total_points": 89.7
+      },
+      {
+        "team_name": "Birdie Butter 2",
+        "players": {
+          "Rory McIlroy": 40.0,
+          "Patrick Cantlay": 8.5,
+          "Jordan Spieth": 0.3,
+          "Byeong Hun An": 17.0
+        },
+        "total_points": 65.8
+      },
+      {
+        "team_name": "Iam2D 1",
+        "players": {
+          "Collin Morikawa": 38.7,
+          "Sahith Theegala": 19.5,
+          "Nick Taylor": 1.0,
+          "Tony Finau": 8.0,
+          "Byeong Hun An": 17.0,
+          "J.T. Poston": 4.5
+        },
+        "total_points": 88.7
+      },
+      {
+        "team_name": "Iam2D 2",
+        "players": {
+          "Wyndham Clark": 39.8,
+          "Xander Schauffele": 71.8,
+          "Nick Taylor": 1.0,
+          "Corey Conners": 0.0,
+          "Beau Hossler": 4.5
+        },
+        "total_points": 117.1
+      },
+      {
+        "team_name": "Sean's Putt Pirates",
+        "players": {
+          "Scottie Scheffler": 112.0,
+          "Nick Taylor": 1.0,
+          "Hideki Matsuyama": 12.0,
+          "Ludvig Aberg": 30.5
+        },
+        "total_points": 155.5
+      },
+      {
+        "team_name": "BAD 1",
+        "players": {
+          "Collin Morikawa": 38.7,
+          "Sam Burns": 0.0,
+          "Cameron Young": 14.0,
+          "Chris Kirk": 0.5,
+          "Hideki Matsuyama": 12.0,
+          "Justin Thomas": 7.5,
+          "Ludvig Aberg": 30.5
+        },
+        "total_points": 103.2
+      },
+      {
+        "team_name": "BAD 2",
+        "players": {
+          "Viktor Hovland": 20.0,
+          "Rory McIlroy": 40.0,
+          "Justin Thomas": 7.5,
+          "Ludvig Aberg": 30.5
+        },
+        "total_points": 98.0
+      },
+      {
+        "team_name": "BAD 3",
+        "players": {
+          "Scottie Scheffler": 112.0,
+          "Wyndham Clark": 39.8,
+          "Ludvig Aberg": 30.5
+        },
+        "total_points": 182.3
+      },
+      {
+        "team_name": "Jacob Uridil",
+        "players": {
+          "Rory McIlroy": 40.0,
+          "Jordan Spieth": 0.3,
+          "Corey Conners": 0.0,
+          "Hideki Matsuyama": 12.0,
+          "Justin Thomas": 7.5
+        },
+        "total_points": 59.8
+      },
+      {
+        "team_name": "The Double Bogeys",
+        "players": {
+          "Rory McIlroy": 40.0,
+          "Rickie Fowler": 0.0,
+          "Nick Taylor": 1.0,
+          "Justin Thomas": 7.5,
+          "Ludvig Aberg": 30.5
+        },
+        "total_points": 79.0
+      },
+      {
+        "team_name": "The Fore Players",
+        "players": {
+          "Rory McIlroy": 40.0,
+          "Rickie Fowler": 0.0,
+          "Si Woo Kim": 9.0,
+          "Hideki Matsuyama": 12.0,
+          "Justin Thomas": 7.5
+        },
+        "total_points": 68.5
+      },
+      {
+        "team_name": "Team Remy1",
+        "players": {
+          "Matt Fitzpatrick": 12.3,
+          "Jason Day": 6.5,
+          "Sungjae Im": 6.8,
+          "Nick Taylor": 1.0,
+          "Justin Thomas": 7.5,
+          "Ludvig Aberg": 30.5
+        },
+        "total_points": 64.6
+      },
+      {
+        "team_name": "Amanda Shaw",
+        "players": {
+          "Jon Rahm": 0.0,
+          "Collin Morikawa": 38.7,
+          "Sam Burns": 0.0,
+          "Ludvig Aberg": 30.5
+        },
+        "total_points": 69.2
+      },
+      {
+        "team_name": "3 Tees",
+        "players": {
+          "Viktor Hovland": 20.0,
+          "Collin Morikawa": 38.7,
+          "Nick Taylor": 1.0,
+          "Justin Thomas": 7.5,
+          "Ludvig Aberg": 30.5
+        },
+        "total_points": 97.7
+      },
+      {
+        "team_name": "Rocco 1",
+        "players": {
+          "Rory McIlroy": 40.0,
+          "Xander Schauffele": 71.8,
+          "Cameron Young": 14.0,
+          "Hideki Matsuyama": 12.0,
+          "Ludvig Aberg": 30.5
+        },
+        "total_points": 168.3
+      },
+      {
+        "team_name": "Rocco 2",
+        "players": {
+          "Rory McIlroy": 40.0,
+          "Matt Fitzpatrick": 12.3,
+          "Cameron Young": 14.0,
+          "Chris Kirk": 0.5,
+          "Ludvig Aberg": 30.5
+        },
+        "total_points": 97.3
+      },
+      {
+        "team_name": "Phil 1",
+        "players": {
+          "Scottie Scheffler": 112.0,
+          "Tommy Fleetwood": 19.7,
+          "Hideki Matsuyama": 12.0,
+          "Justin Thomas": 7.5
+        },
+        "total_points": 151.2
+      },
+      {
+        "team_name": "Phil 2",
+        "players": {
+          "Scottie Scheffler": 112.0,
+          "Rory McIlroy": 40.0
+        },
+        "total_points": 152.0
+      },
+      {
+        "team_name": "Syd 1",
+        "players": {
+          "Rory McIlroy": 40.0,
+          "Xander Schauffele": 71.8,
+          "Matt Fitzpatrick": 12.3,
+          "Hideki Matsuyama": 12.0
+        },
+        "total_points": 136.1
+      },
+      {
+        "team_name": "Syd 2",
+        "players": {
+          "Rory McIlroy": 40.0,
+          "Nick Taylor": 1.0,
+          "Chris Kirk": 0.5,
+          "Hideki Matsuyama": 12.0,
+          "Justin Thomas": 7.5,
+          "Ludvig Aberg": 30.5
+        },
+        "total_points": 91.5
+      },
+      {
+        "team_name": "SF Lucky Day",
+        "players": {
+          "Jon Rahm": 0.0,
+          "Rory McIlroy": 40.0,
+          "Lee Hodges": 0.0
+        },
+        "total_points": 40.0
+      },
+      {
+        "team_name": "SF Sea Biscuit",
+        "players": {
+          "Jason Day": 6.5,
+          "Lucas Glover": 0.0,
+          "Russell Henley": 13.8,
+          "Nick Taylor": 1.0,
+          "Tony Finau": 8.0,
+          "Taylor Montgomery": 0.0
+        },
+        "total_points": 29.3
+      },
+      {
+        "team_name": "GINAX1",
+        "players": {
+          "Viktor Hovland": 20.0,
+          "Sahith Theegala": 19.5,
+          "Jason Day": 6.5,
+          "Tommy Fleetwood": 19.7
+        },
+        "total_points": 65.7
+      },
+      {
+        "team_name": "GINAX2",
+        "players": {
+          "Rory McIlroy": 40.0,
+          "Max Homa": 20.7,
+          "Rickie Fowler": 0.0
+        },
+        "total_points": 60.7
+      },
+      {
+        "team_name": "GINAX3",
+        "players": {
+          "Scottie Scheffler": 112.0,
+          "Matt Fitzpatrick": 12.3,
+          "Corey Conners": 0.0
+        },
+        "total_points": 124.3
+      },
+      {
+        "team_name": "Birdie Babe",
+        "players": {
+          "Matt Fitzpatrick": 12.3,
+          "Sahith Theegala": 19.5,
+          "Harris English": 0.0,
+          "Cameron Young": 14.0,
+          "Adam Svensson": 0.0,
+          "J.T. Poston": 4.5
+        },
+        "total_points": 50.3
+      },
+      {
+        "team_name": "Swifties",
+        "players": {
+          "Rory McIlroy": 40.0,
+          "Tony Finau": 8.0,
+          "Cameron Young": 14.0,
+          "Justin Thomas": 7.5,
+          "Ludvig Aberg": 30.5,
+          "Taylor Montgomery": 0.0
+        },
+        "total_points": 100.0
+      },
+      {
+        "team_name": "Puppitmastir",
+        "players": {
+          "Scottie Scheffler": 112.0,
+          "Hideki Matsuyama": 12.0,
+          "Justin Thomas": 7.5,
+          "Byeong Hun An": 17.0,
+          "Ludvig Aberg": 30.5
+        },
+        "total_points": 179.0
+      },
+      {
+        "team_name": "Michael Shaw",
+        "players": {
+          "Patrick Cantlay": 8.5,
+          "Xander Schauffele": 71.8,
+          "Jordan Spieth": 0.3,
+          "Chris Kirk": 0.5,
+          "Hideki Matsuyama": 12.0
+        },
+        "total_points": 93.1
+      },
+      {
+        "team_name": "FMT 1",
+        "players": {
+          "Rory McIlroy": 40.0,
+          "Viktor Hovland": 20.0,
+          "Justin Thomas": 7.5,
+          "Adam Scott": 0.0
+        },
+        "total_points": 67.5
+      },
+      {
+        "team_name": "FMT 2",
+        "players": {
+          "Patrick Cantlay": 8.5,
+          "Xander Schauffele": 71.8,
+          "Jordan Spieth": 0.3,
+          "Tom Hoge": 0.0,
+          "Hideki Matsuyama": 12.0
+        },
+        "total_points": 92.6
+      },
+      {
+        "team_name": "DRLC 1",
+        "players": {
+          "Xander Schauffele": 71.8,
+          "Sahith Theegala": 19.5,
+          "Mackenzie Hughes": 13.0,
+          "Chris Kirk": 0.5,
+          "Hideki Matsuyama": 12.0,
+          "Byeong Hun An": 17.0,
+          "Ludvig Aberg": 30.5
+        },
+        "total_points": 164.3
+      },
+      {
+        "team_name": "DRLC 2",
+        "players": {
+          "Viktor Hovland": 20.0,
+          "Lucas Glover": 0.0,
+          "Tony Finau": 8.0,
+          "Adam Hadwin": 5.5,
+          "Hideki Matsuyama": 12.0
+        },
+        "total_points": 45.5
+      }
+]
+
+  

@@ -5,7 +5,7 @@ function NavigationBar() {
     <nav>
       <ul>
         <li>
-          <Link to="/" >Home</Link>
+          <Link to="/">Home</Link>
         </li>
         <li>
           <Link to="/teams">Teams</Link>
@@ -14,13 +14,10 @@ function NavigationBar() {
           <Link to="/standings">Standings</Link>
         </li>
         <li>
-          <Link to="/events">Events</Link>
-        </li>
-        <li>
           <Link to="/player-salaries">Player Salaries</Link>
         </li>
         <li>
-        <Link to="/rules">Rules</Link>
+          <Link to="/rules">Rules</Link>
         </li>
       </ul>
     </nav>

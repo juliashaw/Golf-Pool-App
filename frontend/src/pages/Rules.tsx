@@ -1,15 +1,13 @@
 function Rules() {
   return (
     <main
-      style={{ display: "flex", justifyContent: "center", padding: "20px"}}
+      style={{ display: "flex", justifyContent: "center", padding: "20px" }}
     >
-      <div
-        style={{ maxWidth: "500px", width: "100%"}}
-      >
+      <div style={{ maxWidth: "500px", width: "100%" }}>
         <section>
           <h1 style={{ textAlign: "center" }}>Fantasy Golf Pool Rules</h1>
 
-          <div style={{ marginBottom: "20px" }}>
+          <div style={{ marginBottom: "20px", marginTop: "10px" }}>
             <h2 style={{ textAlign: "center" }}>Entry Process</h2>
             <ul style={{ textAlign: "left" }}>
               <li>
@@ -43,7 +41,7 @@ function Rules() {
                 display: "flex",
                 alignItems: "center",
                 flexDirection: "column",
-                marginBottom: '20px'
+                marginBottom: "20px",
               }}
             >
               <p style={{ margin: 0 }}>1st Place: 15 points</p>
@@ -65,7 +63,9 @@ function Rules() {
                 flexDirection: "column",
               }}
             >
-              <p style={{ margin: 0, marginBottom: '12px' }}>The following tournaments will award double points:</p>
+              <p style={{ margin: 0, marginBottom: "12px" }}>
+                The following tournaments will award double points:
+              </p>
               <p style={{ margin: 0 }}>The Players Championship (March)</p>
               <p style={{ margin: 0 }}>The Masters (April)</p>
               <p style={{ margin: 0 }}>The PGA Championship (May)</p>

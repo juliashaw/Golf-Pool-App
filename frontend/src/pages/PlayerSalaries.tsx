@@ -117,10 +117,8 @@ function PlayerSalaries() {
 
   return (
     <main>
-      <section>
-        <h1>Player Salaries in 2023</h1>
-        <PlayerSalariesTable />
-      </section>
+      <h1>Player Salaries in 2023</h1>
+      <PlayerSalariesTable />
     </main>
   );
 }
