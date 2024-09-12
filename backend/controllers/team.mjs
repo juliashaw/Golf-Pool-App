@@ -6,7 +6,7 @@ export const getTeams = async () => {
 
       res.status(200).json(teams);
     } catch (error) {
-      console.error("Error fetching teams: ", error);
+    //   console.error("Error fetching teams: ", error); TODO
       res.status(500).json({ message: "Internal Server Error" });
     }
 }
@@ -16,7 +16,7 @@ export const addTeam = async (teamName, players) => {
     try {
       await createTeam(teamName, players);
     } catch (error) {
-      console.error('Error in adding team:', error);
+    //   console.error('Error in adding team:', error); TODO
       throw error;
     }
   };

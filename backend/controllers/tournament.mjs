@@ -2,14 +2,13 @@ import { fetchTournaments, fetchLeaderboard } from '../services/tournament.mjs';
 
 // Purpose: Try to get tournaments from the database. If empty, 
 // call external API, filter by date, and add them to the database.
-export const getTournaments = async (req, res) => {
+export const getTournaments = async () => {
     try {
       const tournaments = await fetchTournaments();
-
-      res.status(200).json(tournaments);
+      return tournaments
     } catch (error) {
-      console.error("Error fetching tournaments:", error);
-      res.status(500).json({ message: "Internal Server Error" });
+    //   console.error("Error fetching tournaments:", error); TODO
+      throw error
     }
 }
 
@@ -20,7 +19,7 @@ export const getTournamentById = async (id) => {
         const tournament = await fetchLeaderboard(id)
         return tournament
     } catch (error) {
-        console.error('Error retrieving tournament:', error);
+        // console.error('Error retrieving tournament:', error); TODO
         throw error
     }
 }

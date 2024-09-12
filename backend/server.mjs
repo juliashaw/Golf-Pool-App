@@ -10,7 +10,8 @@ import teamsRoute from './src/routes/teams.mjs'
 
 // init app 
 const app = express()
-app.use(cors())
+app.use(cors()) 
+app.use(express.json());
 app.use('/tournaments', tournamentsRoute)
 app.use('/players', playersRoute)
 app.use('/teams', teamsRoute)

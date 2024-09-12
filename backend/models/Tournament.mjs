@@ -3,7 +3,7 @@ import { Schema, model } from 'mongoose';
 const LeaderboardEntrySchema = new Schema({
   player: { type: Schema.Types.ObjectId, ref: 'Player' },
   position: String,
-  totalPar: String,
+  total: String,
 });
 
 const TournamentSchema = new Schema({

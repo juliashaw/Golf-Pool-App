@@ -1,8 +1,9 @@
 import Player from '../models/Player.mjs';
+import { distributePoints } from '../services/tournament.mjs';
 const API_KEY = process.env.API_KEY
 
 // Helper Functions
-export async function fetchPlayerFromAPI(firstName, lastName) {
+export const fetchPlayerFromAPI = async (firstName, lastName) => {
     const url = `https://live-golf-data.p.rapidapi.com/players?lastName=${encodeURIComponent(lastName)}&firstName=${encodeURIComponent(firstName)}`;
     const options = {
         method: 'GET',
@@ -14,10 +15,20 @@ export async function fetchPlayerFromAPI(firstName, lastName) {
 
     const response = await fetch(url, options);
     const playerData = await response.json();
-    return playerData;
+
+    // The API returns an array with a single player object
+    if (Array.isArray(playerData) && playerData.length > 0) {
+        const player = playerData[0];
+        return {
+            id: player.playerId, 
+            name: `${player.firstName}` + " " + `${player.lastName}`,
+        };
+    } 
+    
+    return null;
 }
 
-export async function addNewPlayer(playerId, playerName) {
+export const addNewPlayer = async (playerId, playerName) => {
     try {
         const newPlayer = new Player({
             id: playerId,
@@ -39,30 +50,30 @@ export async function addNewPlayer(playerId, playerName) {
     }
 }
 
-export async function addNewPlayers(tournament, leaderboardRows) {
+export const addNewPlayers = async (leaderboardRows) => {
     try {
         for (const row of leaderboardRows) {
-            const { player } = row
-            let existingPlayer = await Player.findOne({ id: player.id })
+            // const { player } = row
+            let existingPlayer = await Player.findOne({ id: row.playerId })
 
             if (!existingPlayer) {
-                addNewPlayer(player.id, player.name)
+                addNewPlayer(row.playerId, row.name)
             }
         }
     } catch (error) {
-        console.error("Error adding new players:", error)
+        // console.error("Error adding new players:", error) TODO
         throw error
     }
 }
 
-export function isPlayerEligible(player) {
-    return player.canBeOnTeam
+export const isPlayerEligible = (player) => {
+    return player.isInTop60
 }
 
-export async function updatePlayers(tournament, leaderboardRows) {
+export const updatePlayers = async (tournament, leaderboardRows) => {
     try {
         for (const row of leaderboardRows) {
-          let player = await Player.findById(row.player.id);
+          let player = await Player.findOne({ id: row.playerId });
     
           if (player) {
             player.records.currEventsPlayed += 1;
@@ -73,7 +84,7 @@ export async function updatePlayers(tournament, leaderboardRows) {
 
             await player.save();
           } else {
-            console.error(`Player with ID ${row.player.id} not found in database.`);
+            // console.error(`Player with ID ${row.player.id} not found in database.`); TODO
           }
         }
     
@@ -81,9 +92,22 @@ export async function updatePlayers(tournament, leaderboardRows) {
     
         console.log('Player records updated and points distributed successfully.');
       } catch (error) {
-        console.error('Error updating player records:', error);
+        // console.error('Error updating player records:', error); TODO
         throw error;
       }
+}
+
+export const fetchPlayers = async (playerIds) => {
+    const players = []
+    for (const playerId in playerIds) {
+        let player = await Player.findById(playerId)
+        if (player) {
+            players.push({ name: player.name, points: player.points })
+        } else {
+            throw new Error('Some players not found')
+        }
+    }
+    return players
 }
 
 // Purpose: Fetch players from database, sort by salary, return in json array
@@ -103,7 +127,7 @@ export const fetchPlayerSalaries = async () => {
 
         return playerSalariesWithPosition;
     } catch (error) {
-        console.error("Error in fetching player salaries:", error);
+        // console.error("Error in fetching player salaries:", error); TODO
         throw error;
     }
   };
@@ -125,13 +149,13 @@ export const fetchPlayerStandings = async () => {
   
         return playerStandingsWithPosition;
       } catch (error) {
-        console.error("Error in fetching player salaries:", error);
-        throw error;
+        // console.error("Error in fetching player salaries:", error);  TODO
+        throw new Error("Failed to fetch player salaries. Please try again later.");
       }
 };
 
 // Purpose: Update player salary if already in database, otherwise add to database with salary
-export async function createOrUpdatePlayerSalary(playerFirstName, playerLastName, salary) {
+export const createOrUpdatePlayerSalary = async (playerFirstName, playerLastName, salary) => {
     try {
         let playerName = playerFirstName + " " + playerLastName
         let player = await Player.findOne({ name: playerName })
@@ -143,8 +167,7 @@ export async function createOrUpdatePlayerSalary(playerFirstName, playerLastName
             throw new Error('Player not found in the external API')
         }
 
-        const newPlayerName = playerData.firstName + " " + playerData.lastName
-        player = addNewPlayer(playerData.id, newPlayerName)
+        player = await addNewPlayer(playerData.id, playerData.name)
       }
 
         player.records.prevYearSalary = salary
@@ -154,7 +177,7 @@ export async function createOrUpdatePlayerSalary(playerFirstName, playerLastName
         console.log(`Player ${playerName} updated with salary ${salary} and marked as eligible for team.`);
         return player;
     } catch (error) {
-        console.error('Error setting player salary:', error)
+        // console.error('Error setting player salary:', error) TODO
         throw error
     }
 }

@@ -7,7 +7,7 @@ export const getPlayerSalaries = async (req, res) => {
   
       res.status(200).json(playerSalaries);
     } catch (error) {
-      console.error("Error fetching player salaries:", error);
+    //   console.error("Error fetching player salaries:", error); TODO
       res.status(500).json({ message: "Internal Server Error" });
     }
   };
@@ -19,7 +19,7 @@ export const getPlayerStandings = async (req, res) => {
 
       res.status(200).json(playerStandings);
     } catch (error) {
-      console.error("Error fetching player standings:", error);
+    //   console.error("Error fetching player standings:", error); TODO
       res.status(500).json({ message: "Internal Server Error" });
     }
   };
@@ -29,7 +29,7 @@ export const setPlayerSalary = async (firstName, lastName, salary) => {
     try {
       await updateOrCreatePlayerSalary(firstName, lastName, salary);
     } catch (error) {
-      console.error('Error in setting player salary:', error);
+    //   console.error('Error in setting player salary:', error); TODO
       throw error;
     }
   };

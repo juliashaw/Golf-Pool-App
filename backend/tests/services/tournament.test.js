@@ -1,15 +1,15 @@
-import {jest} from '@jest/globals';
-import { calculatePoints, distributePoints, filterTournaments, determineDoublePoints, initializeTournaments, tournamentIsFinished} from '../../services/tournament.mjs'
+import { describe, it, beforeAll, afterAll, beforeEach, afterEach, expect, test, spyOn, clearAllMocks, vi } from 'vitest';
+import { calculatePoints, distributePoints, filterTournaments, determineDoublePoints, initializeTournaments, tournamentIsFinished, fetchLeaderboardFromAPI, fetchTournamentsFromAPI, fetchAndProcessLeaderboard, fetchTournaments, updateTournamentWithLeaderboard} from '../../services/tournament.mjs'
 import Player from '../../models/Player.mjs'
+import Team from '../../models/Team.mjs'
+import Tournament from '../../models/Tournament.mjs'
 import mongoose from 'mongoose';
 import { MongoMemoryServer } from 'mongodb-memory-server';
-
 let mongoServer;
 
 beforeAll(async () => {
-    mongoServer = await MongoMemoryServer.create()
+    mongoServer = await MongoMemoryServer.create() 
     const uri = mongoServer.getUri()
-  
     await mongoose.connect(uri)
 })
 
@@ -19,14 +19,225 @@ afterAll(async () => {
     await mongoServer.stop()
 })
 
-afterEach(async () => {
-    // Clean up the database after each test
+afterEach(async () => { 
     await Player.deleteMany({});
-    jest.clearAllMocks();
+    await Team.deleteMany({})
+    await Tournament.deleteMany({}) 
+    vi.clearAllMocks();
 })
 
-// tests for calculatePoints
-test('calculatePoints returns correct points for different positions', () => {
+describe('fetchTournamentsFromAPI', () => {
+    let mockFetch;
+
+    beforeAll(() => {
+        // Save the original fetch implementation
+        global.originalFetch = global.fetch;
+
+        // Create a manual mock for fetch
+        mockFetch = async (...args) => {
+            mockFetch.calls.push(args);
+            return mockFetch.returnValue;
+        };
+        mockFetch.calls = [];
+        mockFetch.returnValue = null;
+
+        // Replace the global fetch with the manual mock
+        global.fetch = mockFetch;
+    });
+
+    afterEach(() => {
+        // Clear any calls to the mock
+        mockFetch.calls = [];
+        mockFetch.returnValue = null;
+    });
+
+    afterAll(() => {
+        // Restore the original fetch implementation
+        global.fetch = global.originalFetch;
+    });
+
+    it('should return tournament schedule data from the API', async () => {
+        const mockScheduleData = `{
+            "_id": "64fbe3ac235ac8857ff8e769",
+            "orgId": "1",
+            "year": "2024",
+            "schedule": [
+              {
+                "tournId": "016",
+                "name": "The Sentry",
+                "date": {
+                  "start": "2024-01-04T00:00:00Z",
+                  "end": "2024-01-07T00:00:00Z",
+                  "weekNumber": "1"
+                },
+                "format": "stroke",
+                "purse": 20000000,
+                "winnersShare": 3600000,
+                "fedexCupPoints": 700
+              },
+              {
+                "tournId": "006",
+                "name": "Sony Open in Hawaii",
+                "date": {
+                  "start": "2024-01-11T00:00:00Z",
+                  "end": "2024-01-14T00:00:00Z",
+                  "weekNumber": "2"
+                },
+                "format": "stroke",
+                "purse": 8300000,
+                "winnersShare": 1494000,
+                "fedexCupPoints": 500
+              },
+              {
+                "tournId": "002",
+                "name": "The American Express",
+                "date": {
+                  "start": "2024-01-18T00:00:00Z",
+                  "end": "2024-01-21T00:00:00Z",
+                  "weekNumber": "3"
+                },
+                "format": "stroke",
+                "purse": 8400000,
+                "fedexCupPoints": 500
+              }
+            ]
+        }`
+
+        // Set the return value of the mock fetch
+        mockFetch.returnValue = {
+            json: async () => mockScheduleData,
+            ok: true,
+            status: 200,
+        };
+
+        const result = await fetchTournamentsFromAPI();
+        expect(result).toEqual(mockScheduleData);
+    }),
+    it('should throw an error if the API call fails', async () => {
+        mockFetch.returnValue = {
+            json: async () => Promise.reject(new Error('API call failed')),
+        }
+
+        await expect(fetchTournamentsFromAPI()).rejects.toThrow('Error fetching tournaments from external API');
+    });
+});
+
+describe('fetchLeaderboardFromAPI', () => {
+    let mockFetch;
+
+    beforeAll(() => {
+        // Save the original fetch implementation
+        global.originalFetch = global.fetch;
+
+        // Create a manual mock for fetch
+        mockFetch = async (...args) => {
+            mockFetch.calls.push(args);
+            return mockFetch.returnValue;
+        };
+        mockFetch.calls = [];
+        mockFetch.returnValue = null;
+
+        // Replace the global fetch with the manual mock
+        global.fetch = mockFetch;
+    });
+
+    afterEach(() => {
+        // Clear any calls to the mock
+        mockFetch.calls = [];
+        mockFetch.returnValue = null;
+    });
+
+    afterAll(() => {
+        // Restore the original fetch implementation
+        global.fetch = global.originalFetch;
+    });
+
+    it('should return leaderboard data from the API', async () => {
+        const mockLeaderboardData = `{
+            "_id": "6600108c1805627a0ea682b2",
+            "orgId": "1",
+            "year": "2024",
+            "tournId": "475",
+            "status": "Official",
+            "roundId": 4,
+            "roundStatus": "Official",
+            "lastUpdated": "2024-03-24T22:11:32.844Z",
+            "timestamp": "2024-03-24T22:11:32.844Z",
+            "cutLines": [
+              {
+                "cutCount": 75,
+                "cutScore": "E"
+              }
+            ],
+            "leaderboardRows": [
+              {
+                "lastName": "Malnati",
+                "firstName": "Peter",
+                "playerId": "34466",
+                "isAmateur": false,
+                "courseId": "665",
+                "status": "complete",
+                "position": "1",
+                "total": "-12",
+                "currentRoundScore": "-4",
+                "totalStrokesFromCompletedRounds": "272",
+                "currentHole": 18,
+                "startingHole": 1,
+                "roundComplete": true,
+                "rounds": [
+                  {
+                    "scoreToPar": "-5",
+                    "roundId": 1,
+                    "strokes": 66,
+                    "courseId": "665",
+                    "courseName": "Innisbrook Resort (Copperhead Course)"
+                  },
+                  {
+                    "scoreToPar": "E",
+                    "roundId": 2,
+                    "strokes": 71,
+                    "courseId": "665",
+                    "courseName": "Innisbrook Resort (Copperhead Course)"
+                  },
+                  {
+                    "scoreToPar": "-3",
+                    "roundId": 3,
+                    "strokes": 68,
+                    "courseId": "665",
+                    "courseName": "Innisbrook Resort (Copperhead Course)"
+                  },
+                  {
+                    "scoreToPar": "-4",
+                    "roundId": 4,
+                    "strokes": 67,
+                    "courseId": "665",
+                    "courseName": "Innisbrook Resort (Copperhead Course)"
+                  }
+                ],
+                "thru": "F",
+                "currentRound": 4,
+                "teeTime": "1:40pm",
+                "teeTimeTimestamp": "2024-03-24T17:40:00Z"
+              }
+            ]
+        }`
+
+        // Set the return value of the mock fetch
+        mockFetch.returnValue = {
+            json: async () => mockLeaderboardData,
+        };
+
+        const result = await fetchLeaderboardFromAPI(475);
+        expect(result).toEqual(mockLeaderboardData);
+    }),
+    it('should throw an error if the API call fails', async () => {
+        mockFetch.returnValue = Promise.reject(new Error('API call failed'));
+
+        await expect(fetchLeaderboardFromAPI(475)).rejects.toThrow('API call failed');
+    });
+});
+
+test('calculatePoints', () => {
     expect(calculatePoints(0)).toBe(0);
     expect(calculatePoints(1)).toBe(15);
     expect(calculatePoints(2)).toBe(12);
@@ -41,8 +252,7 @@ test('calculatePoints returns correct points for different positions', () => {
     expect(calculatePoints(11)).toBe(0); 
 });
 
-// tests for distributePoints
-describe('distributePoints correctly adds points to players, accounting for ties and doublePoints', () => {
+describe('distributePoints', () => {
     test('no ties', async () => {
         const tournament = {
             id: "483",
@@ -50,32 +260,27 @@ describe('distributePoints correctly adds points to players, accounting for ties
             dateStart: "2024-03-07T00:00:00Z",
             dateEnd: "2024-03-10T00:00:00Z",
             doublePoints: false,
-            messnage: "",
+            message: "",
             leaderboard: null,
         }
     
-        // Prepare leaderboard rows for 10 players with positions from 1 to 10
         const leaderboardRows = Array.from({ length: 10 }, (_, i) => ({
             position: (i + 1).toString(),
             playerId: `player${i + 1}`,
         }));
     
-        // Create player documents in the database
         for (let i = 0; i < 10; i++) {
             await Player.create({ id: `player${i + 1}`, points: 0 });
         }
-    
-        // Call the distributePoints function
+
         await distributePoints(tournament, leaderboardRows);
     
-        // Verify that each player has the correct points
         for (let i = 0; i < 10; i++) {
             const player = await Player.findOne({ id: `player${i + 1}` });
             const expectedPoints = calculatePoints(i + 1)
             expect(player.points).toBe(expectedPoints)
         }
-    })
-
+    }),
     test('no ties, double points', async () => {
         const tournament = {
             id: "483",
@@ -83,32 +288,27 @@ describe('distributePoints correctly adds points to players, accounting for ties
             dateStart: "2024-03-07T00:00:00Z",
             dateEnd: "2024-03-10T00:00:00Z",
             doublePoints: true,
-            messnage: "",
+            message: "",
             leaderboard: null,
         }
     
-        // Prepare leaderboard rows for 10 players with positions from 1 to 10
         const leaderboardRows = Array.from({ length: 10 }, (_, i) => ({
             position: (i + 1).toString(),
             playerId: `player${i + 1}`,
         }));
     
-        // Create player documents in the database
         for (let i = 0; i < 10; i++) {
             await Player.create({ id: `player${i + 1}`, points: 0 });
         }
     
-        // Call the distributePoints function
         await distributePoints(tournament, leaderboardRows);
     
-        // Verify that each player has the correct points
         for (let i = 0; i < 10; i++) {
             const player = await Player.findOne({ id: `player${i + 1}` });
             const expectedPoints = calculatePoints(i + 1)
             expect(player.points).toBe(expectedPoints * 2)
         }
-    })
-
+    }),
     test('two-way tie for second place', async () => {
         const tournament = {
             id: "483",
@@ -116,30 +316,28 @@ describe('distributePoints correctly adds points to players, accounting for ties
             dateStart: "2024-03-07T00:00:00Z",
             dateEnd: "2024-03-10T00:00:00Z",
             doublePoints: false,
-            messnage: "",
+            message: "",
             leaderboard: null,
         }
 
         const leaderboardRows = [
-            { position: "1", playerId: "player1" },  // First place
-            { position: "T2", playerId: "player2" }, // Tied for second place
-            { position: "T2", playerId: "player3" }, // Tied for second place
-            { position: "4", playerId: "player4" },  // Fourth place
-            { position: "5", playerId: "player5" },  // Fifth place
-            { position: "6", playerId: "player6" },  // Sixth place
-            { position: "7", playerId: "player7" },  // Seventh place
-            { position: "8", playerId: "player8" },  // Eighth place
-            { position: "9", playerId: "player9" },  // Ninth place
-            { position: "10", playerId: "player10" },// Tenth place
-            { position: "11", playerId: "player11" } // Eleventh place
+            { position: "1", playerId: "player1" },  
+            { position: "T2", playerId: "player2" }, 
+            { position: "T2", playerId: "player3" }, 
+            { position: "4", playerId: "player4" },  
+            { position: "5", playerId: "player5" },  
+            { position: "6", playerId: "player6" },  
+            { position: "7", playerId: "player7" },  
+            { position: "8", playerId: "player8" },  
+            { position: "9", playerId: "player9" },  
+            { position: "10", playerId: "player10" },
+            { position: "11", playerId: "player11" } 
         ];
 
-        // Create player documents in the database
         for (let i = 0; i < 11; i++) {
             await Player.create({ id: `player${i + 1}`, points: 0 });
         }
     
-        // Call the distributePoints function
         await distributePoints(tournament, leaderboardRows);
 
         const player1 = await Player.findOne({ id: `player1` });
@@ -164,8 +362,7 @@ describe('distributePoints correctly adds points to players, accounting for ties
         expect(player10.points).toBe(1)
         const player11 = await Player.findOne({ id: `player11` });
         expect(player11.points).toBe(0)
-    })
-
+    }),
     test('two-way tie for second place, doublePoints', async () => {
         const tournament = {
             id: "483",
@@ -173,30 +370,28 @@ describe('distributePoints correctly adds points to players, accounting for ties
             dateStart: "2024-03-07T00:00:00Z",
             dateEnd: "2024-03-10T00:00:00Z",
             doublePoints: true,
-            messnage: "",
+            message: "",
             leaderboard: null,
         }
 
         const leaderboardRows = [
-            { position: "1", playerId: "player1" },  // First place
-            { position: "T2", playerId: "player2" }, // Tied for second place
-            { position: "T2", playerId: "player3" }, // Tied for second place
-            { position: "4", playerId: "player4" },  // Fourth place
-            { position: "5", playerId: "player5" },  // Fifth place
-            { position: "6", playerId: "player6" },  // Sixth place
-            { position: "7", playerId: "player7" },  // Seventh place
-            { position: "8", playerId: "player8" },  // Eighth place
-            { position: "9", playerId: "player9" },  // Ninth place
-            { position: "10", playerId: "player10" },// Tenth place
-            { position: "11", playerId: "player11" } // Eleventh place
+            { position: "1", playerId: "player1" },  
+            { position: "T2", playerId: "player2" }, 
+            { position: "T2", playerId: "player3" },
+            { position: "4", playerId: "player4" },  
+            { position: "5", playerId: "player5" },  
+            { position: "6", playerId: "player6" }, 
+            { position: "7", playerId: "player7" },  
+            { position: "8", playerId: "player8" }, 
+            { position: "9", playerId: "player9" },  
+            { position: "10", playerId: "player10" },
+            { position: "11", playerId: "player11" } 
         ];
 
-        // Create player documents in the database
         for (let i = 0; i < 11; i++) {
             await Player.create({ id: `player${i + 1}`, points: 0 });
         }
     
-        // Call the distributePoints function
         await distributePoints(tournament, leaderboardRows);
 
         const player1 = await Player.findOne({ id: `player1` });
@@ -221,8 +416,7 @@ describe('distributePoints correctly adds points to players, accounting for ties
         expect(player10.points).toBe(2)
         const player11 = await Player.findOne({ id: `player11` });
         expect(player11.points).toBe(0)
-    })
-
+    }),
     test('two-way tie for ninth place', async () => {
         const tournament = {
             id: "483",
@@ -230,7 +424,7 @@ describe('distributePoints correctly adds points to players, accounting for ties
             dateStart: "2024-03-07T00:00:00Z",
             dateEnd: "2024-03-10T00:00:00Z",
             doublePoints: false,
-            messnage: "",
+            message: "",
             leaderboard: null,
         }
 
@@ -243,11 +437,10 @@ describe('distributePoints correctly adds points to players, accounting for ties
             { position: "6", playerId: "player6" },
             { position: "7", playerId: "player7" },
             { position: "8", playerId: "player8" },
-            { position: "T9", playerId: "player9" },  // Tied for ninth place
-            { position: "T9", playerId: "player10" }  // Tied for ninth place
+            { position: "T9", playerId: "player9" },  
+            { position: "T9", playerId: "player10" }  
         ];
     
-        // Create players in the database
         for (let i = 0; i < 10; i++) {
             await Player.create({ id: `player${i + 1}`, points: 0 });
         }
@@ -257,11 +450,9 @@ describe('distributePoints correctly adds points to players, accounting for ties
         const player9 = await Player.findOne({ id: "player9" });
         const player10 = await Player.findOne({ id: "player10" });
     
-        // Assuming points for 9th = 20, 10th = 10, average = 15
         expect(player9.points).toBe(1.5);
         expect(player10.points).toBe(1.5);
-    })
-
+    }),
     test('two-way tie for tenth place', async () => {
         const tournament = {
             id: "483",
@@ -269,7 +460,7 @@ describe('distributePoints correctly adds points to players, accounting for ties
             dateStart: "2024-03-07T00:00:00Z",
             dateEnd: "2024-03-10T00:00:00Z",
             doublePoints: false,
-            messnage: "",
+            message: "",
             leaderboard: null,
         }
 
@@ -283,11 +474,10 @@ describe('distributePoints correctly adds points to players, accounting for ties
             { position: "7", playerId: "player7" },
             { position: "8", playerId: "player8" },
             { position: "9", playerId: "player9" },
-            { position: "T10", playerId: "player10" },  // Tied for tenth place
-            { position: "T10", playerId: "player11" }  // Tied for tenth place
+            { position: "T10", playerId: "player10" },  
+            { position: "T10", playerId: "player11" }  
         ];
     
-        // Create players in the database
         for (let i = 0; i < 11; i++) {
             await Player.create({ id: `player${i + 1}`, points: 0 });
         }
@@ -299,8 +489,7 @@ describe('distributePoints correctly adds points to players, accounting for ties
     
         expect(player10.points).toBe(0.5);
         expect(player11.points).toBe(0.5);
-    })
-
+    }),
     test('two-way tie for second place, two-way tie for fifth place', async () => {
         const tournament = {
             id: "483",
@@ -308,24 +497,23 @@ describe('distributePoints correctly adds points to players, accounting for ties
             dateStart: "2024-03-07T00:00:00Z",
             dateEnd: "2024-03-10T00:00:00Z",
             doublePoints: false,
-            messnage: "",
+            message: "",
             leaderboard: null,
         }
 
         const leaderboardRows = [
             { position: "1", playerId: "player1" },
-            { position: "T2", playerId: "player2" },  // Tied for second place
-            { position: "T2", playerId: "player3" },  // Tied for second place
+            { position: "T2", playerId: "player2" },  
+            { position: "T2", playerId: "player3" },  
             { position: "4", playerId: "player4" },
-            { position: "T5", playerId: "player5" },  // Tied for fifth place
-            { position: "T5", playerId: "player6" },  // Tied for fifth place
+            { position: "T5", playerId: "player5" },  
+            { position: "T5", playerId: "player6" }, 
             { position: "7", playerId: "player7" },
             { position: "8", playerId: "player8" },
             { position: "9", playerId: "player9" },
             { position: "10", playerId: "player10" }
         ];
     
-        // Create players in the database
         for (let i = 0; i < 10; i++) {
             await Player.create({ id: `player${i + 1}`, points: 0 });
         }
@@ -341,8 +529,7 @@ describe('distributePoints correctly adds points to players, accounting for ties
         expect(player3.points).toBe(11);
         expect(player5.points).toBe(5.5);
         expect(player6.points).toBe(5.5);
-    })
-
+    }),
     test('two-way tie for second place, three-way tie for fifth place', async () => {
         const tournament = {
             id: "483",
@@ -350,24 +537,23 @@ describe('distributePoints correctly adds points to players, accounting for ties
             dateStart: "2024-03-07T00:00:00Z",
             dateEnd: "2024-03-10T00:00:00Z",
             doublePoints: false,
-            messnage: "",
+            message: "",
             leaderboard: null,
         }
 
         const leaderboardRows = [
             { position: "1", playerId: "player1" },
-            { position: "T2", playerId: "player2" },  // Tied for second place
-            { position: "T2", playerId: "player3" },  // Tied for second place
+            { position: "T2", playerId: "player2" },  
+            { position: "T2", playerId: "player3" }, 
             { position: "4", playerId: "player4" },
-            { position: "T5", playerId: "player5" },  // Tied for fifth place
-            { position: "T5", playerId: "player6" },  // Tied for fifth place
-            { position: "T5", playerId: "player7" },  // Tied for fifth place
+            { position: "T5", playerId: "player5" },  
+            { position: "T5", playerId: "player6" },  
+            { position: "T5", playerId: "player7" },  
             { position: "8", playerId: "player8" },
             { position: "9", playerId: "player9" },
             { position: "10", playerId: "player10" }
         ];
     
-        // Create players in the database
         for (let i = 0; i < 10; i++) {
             await Player.create({ id: `player${i + 1}`, points: 0 });
         }
@@ -386,8 +572,7 @@ describe('distributePoints correctly adds points to players, accounting for ties
         expect(player5.points).toBe(5);
         expect(player6.points).toBe(5);
         expect(player7.points).toBe(5);
-    })
-
+    }),
     test('three-way tie for tenth place', async () => {
         const tournament = {
             id: "483",
@@ -395,7 +580,7 @@ describe('distributePoints correctly adds points to players, accounting for ties
             dateStart: "2024-03-07T00:00:00Z",
             dateEnd: "2024-03-10T00:00:00Z",
             doublePoints: false,
-            messnage: "",
+            message: "",
             leaderboard: null,
         }
 
@@ -414,7 +599,6 @@ describe('distributePoints correctly adds points to players, accounting for ties
             { position: "T10", playerId: "player12" }
         ];
     
-        // Create players in the database
         for (let i = 0; i < 12; i++) {
             await Player.create({ id: `player${i + 1}`, points: 0 });
         }
@@ -429,8 +613,7 @@ describe('distributePoints correctly adds points to players, accounting for ties
         expect(player10.points).toBe(n);
         expect(player11.points).toBe(n);
         expect(player12.points).toBe(n);
-    })
-
+    }),
     it('should throw an error if saving a player fails', async () => {
         const tournament = {
             id: "483",
@@ -438,7 +621,7 @@ describe('distributePoints correctly adds points to players, accounting for ties
             dateStart: "2024-03-07T00:00:00Z",
             dateEnd: "2024-03-10T00:00:00Z",
             doublePoints: false,
-            messnage: "",
+            message: "",
             leaderboard: null,
         }
 
@@ -448,28 +631,19 @@ describe('distributePoints correctly adds points to players, accounting for ties
             { position: "3", playerId: "player3" }
         ];
 
-        // Create players in the database
         for (let i = 0; i < 3; i++) {
             await Player.create({ id: `player${i + 1}`, points: 0 });
         }
 
-        // Mock the save method to throw an error when trying to save a player
-        const saveMock = jest.spyOn(Player.prototype, 'save').mockRejectedValue(new Error('Failed to save player'));
+        const saveMock = vi.spyOn(Player.prototype, 'save').mockRejectedValue(new Error('Failed to save player'));
 
-        // Call distributePoints and expect it to throw an error
         await expect(distributePoints(tournament, leaderboardRows)).rejects.toThrow('Failed to save player');
 
-        // Restore the original implementation after the test
         saveMock.mockRestore();
     });
 })
 
-
-
-
-// tests for filterTournaments
-describe('filterTournaments returns filtered tournaments', () => {
-
+describe('filterTournaments', () => {
     test('filter none', () => {
         let unfilteredTournaments = [
             {
@@ -488,8 +662,7 @@ describe('filterTournaments returns filtered tournaments', () => {
         ]
 
         expect(filterTournaments(unfilteredTournaments)).toStrictEqual(unfilteredTournaments)
-    })
-
+    }),
     test('filter one', () => {
         let unfilteredTournaments = [
             {
@@ -537,8 +710,7 @@ describe('filterTournaments returns filtered tournaments', () => {
         ]
 
         expect(filterTournaments(unfilteredTournaments)).toStrictEqual(filteredTournaments)
-    })
-
+    }),
     test('filter many', () => {
         let unfilteredTournaments = [
             {
@@ -550,7 +722,7 @@ describe('filterTournaments returns filtered tournaments', () => {
                 },
                 "weekNumber": "9",
                 "format": "stroke",
-                "purse": 9000000,
+                "purse": 9000000, 
                 "winnersShare": 1620000,
                 "fedexCupPoints": 500
             },
@@ -602,8 +774,7 @@ describe('filterTournaments returns filtered tournaments', () => {
     })
 })
 
-// tests for initializeTournaments
-describe('initalizeTournaments initalizes the tournaments', () => {
+describe('initalizeTournaments', () => {
     test('initalize one', () => {
         let unintializedTournaments = [
             {
@@ -645,8 +816,7 @@ describe('initalizeTournaments initalizes the tournaments', () => {
     })
 })
 
-// tests for determineDoublePoints
-describe('determineDoublePoints works correctly', () => {
+describe('determineDoublePoints', () => {
     test('THE PLAYERS Championship', () => {
         let tournament = {
             "tournId": "483",
@@ -663,8 +833,7 @@ describe('determineDoublePoints works correctly', () => {
         }
 
         expect(determineDoublePoints(tournament)).toBeTruthy()
-    })
-
+    }),
     test('Masters Tournament', () => {
         let tournament = {
             "tournId": "483",
@@ -681,8 +850,7 @@ describe('determineDoublePoints works correctly', () => {
         }
 
         expect(determineDoublePoints(tournament)).toBeTruthy()
-    })
-
+    }),
     test('PGA Championship', () => {
         let tournament = {
             "tournId": "483",
@@ -699,8 +867,7 @@ describe('determineDoublePoints works correctly', () => {
         }
 
         expect(determineDoublePoints(tournament)).toBeTruthy()
-    })
-
+    }),
     test('U.S. Open', () => {
         let tournament = {
             "tournId": "483",
@@ -717,8 +884,7 @@ describe('determineDoublePoints works correctly', () => {
         }
 
         expect(determineDoublePoints(tournament)).toBeTruthy()
-    })
-
+    }),
     test('The Open Championship', () => {
         let tournament = {
             "tournId": "483",
@@ -735,8 +901,7 @@ describe('determineDoublePoints works correctly', () => {
         }
 
         expect(determineDoublePoints(tournament)).toBeTruthy()
-    })
-
+    }),
     test('TOUR Championship', () => {
         let tournament = {
             "tournId": "483",
@@ -753,8 +918,7 @@ describe('determineDoublePoints works correctly', () => {
         }
 
         expect(determineDoublePoints(tournament)).toBeTruthy()
-    })
-
+    }),
     test('Barracuda Championship', () => {
         let tournament = {
             "tournId": "483",
@@ -774,175 +938,84 @@ describe('determineDoublePoints works correctly', () => {
     })
 })
 
-// tests for tournamentIsFinished
-describe(`tournamentIsFinished works correctly`, () => {
-    test('should return true', () => {
+describe(`tournamentIsFinished`, () => {
+    it('should return true', async () => {
         let tournament = {
-            "tournId": "483",
-            "name": "Puerto Rico Open",
-            "date": {
-              "start": "2024-03-07T00:00:00Z",
-              "end": "2024-03-10T00:00:00Z"
-            },
-            "weekNumber": "10",
-            "format": "stroke",
-            "purse": 4000000,
-            "winnersShare": 720000,
-            "fedexCupPoints": 300
+            id: "483",
+            name: "Puerto Rico Open",
+            dateStart: "2024-03-07T00:00:00Z",
+            dateEnd: "2024-03-10T00:00:00Z",
+            doublePoints: false,
+            message: "",
+            leaderboard: null
+        }
+
+        await Tournament.create(tournament)
+        const testTournament = await Tournament.findOne({ id: tournament.id })
+        
+        expect(await tournamentIsFinished(testTournament)).toBeTruthy()
+    }),
+    it('should return false', async () => {
+        let tournament = {
+            id: "483",
+            name: "Puerto Rico Open",
+            dateStart: "2024-03-07T00:00:00Z",
+            dateEnd: "2034-03-10T00:00:00Z",
+            doublePoints: false,
+            message: "",
+            leaderboard: null
         }
         
-        expect(tournamentIsFinished(tournament)).toBeTruthy()
-    })
-
-    test('should return false', () => {
-        let tournament = {
-            "tournId": "483",
-            "name": "Puerto Rico Open",
-            "date": {
-              "start": "2024-03-07T00:00:00Z",
-              "end": "2034-03-10T00:00:00Z"
-            },
-            "weekNumber": "10",
-            "format": "stroke",
-            "purse": 4000000,
-            "winnersShare": 720000,
-            "fedexCupPoints": 300
-        }
+        await Tournament.create(tournament)
+        const testTournament = await Tournament.findOne({ id: tournament.id })
         
-        expect(tournamentIsFinished(tournament)).toBeFalsy()
-    })
-
-    test('should return false', () => {
+        expect(await tournamentIsFinished(testTournament)).toBeFalsy()
+    }),
+    it('should return false', async () => {
         const d = new Date()
         let dateString = d.toString()
 
         let tournament = {
-            "tournId": "483",
-            "name": "Puerto Rico Open",
-            "date": {
-              "start": "2024-03-07T00:00:00Z",
-              "end": dateString
-            },
-            "weekNumber": "10",
-            "format": "stroke",
-            "purse": 4000000,
-            "winnersShare": 720000,
-            "fedexCupPoints": 300
+            id: "483",
+            name: "Puerto Rico Open",
+            dateStart: "2024-03-07T00:00:00Z",
+            dateEnd: dateString,
+            doublePoints: false,
+            message: "",
+            leaderboard: null
         }
         
-        expect(tournamentIsFinished(tournament)).toBeFalsy()
+        await Tournament.create(tournament)
+        const testTournament = await Tournament.findOne({ id: tournament.id }) 
+        
+        expect(await tournamentIsFinished(testTournament)).toBeFalsy()
     })
-}) 
+})
 
-// tests for fetchTournamentsFromAPI
-describe('fetchTournamentsFromAPI', () => {
-    let mockFetch;
+describe('fetchAndProcessLeaderboard', () => {
+    it.todo('should return correctly formatted leaderboard rows')
 
-    beforeAll(() => {
-        // Save the original fetch implementation
-        global.originalFetch = global.fetch;
+    it.todo('should throw an error if database fetch fails')
+})
 
-        // Create a manual mock for fetch
-        mockFetch = async (...args) => {
-            mockFetch.calls.push(args);
-            return mockFetch.returnValue;
-        };
-        mockFetch.calls = [];
-        mockFetch.returnValue = null;
+describe('updateTournamentWithLeaderboard', () => {
+    it.todo('should update tournament leaderboard')
 
-        // Replace the global fetch with the manual mock
-        global.fetch = mockFetch;
-    });
+    it.todo('should throw an error if database save fails')
+})
 
-    afterEach(() => {
-        // Clear any calls to the mock
-        mockFetch.calls = [];
-        mockFetch.returnValue = null;
-    });
+describe('fetchTournaments', () => {
+    it.todo('should return tournaments from database')
 
-    afterAll(() => {
-        // Restore the original fetch implementation
-        global.fetch = global.originalFetch;
-    });
+    it.todo('should return new tournaments from external API')
 
-    it('should return tournament schedule data from the API', async () => {
-        const mockScheduleData = {
-            schedule: [
-                { id: '1', name: 'Tournament One', date: '2024-03-01' },
-                { id: '2', name: 'Tournament Two', date: '2024-04-01' },
-            ],
-        };
+    it.todo('should throw an error if database fetch fails')
+})
 
-        // Set the return value of the mock fetch
-        mockFetch.returnValue = {
-            json: async () => mockScheduleData,
-        };
+describe('fetchLeaderboard', () => {
+    it.todo('should return tournaments from database')
 
-        const result = await fetchTournamentsFromAPI();
-        expect(result).toEqual(mockScheduleData.schedule);
-    });
+    it.todo('should return new tournaments from external API')
 
-    it('should throw an error if the API call fails', async () => {
-        // Set the mock to throw an error
-        mockFetch.returnValue = Promise.reject(new Error('API call failed'));
-
-        await expect(fetchTournamentsFromAPI()).rejects.toThrow('API call failed');
-    });
-});
-
-
-// test for fetchLeaderboardFromAPI
-describe('fetchLeaderboardFromAPI', () => {
-    let mockFetch;
-
-    beforeAll(() => {
-        // Save the original fetch implementation
-        global.originalFetch = global.fetch;
-
-        // Create a manual mock for fetch
-        mockFetch = async (...args) => {
-            mockFetch.calls.push(args);
-            return mockFetch.returnValue;
-        };
-        mockFetch.calls = [];
-        mockFetch.returnValue = null;
-
-        // Replace the global fetch with the manual mock
-        global.fetch = mockFetch;
-    });
-
-    afterEach(() => {
-        // Clear any calls to the mock
-        mockFetch.calls = [];
-        mockFetch.returnValue = null;
-    });
-
-    afterAll(() => {
-        // Restore the original fetch implementation
-        global.fetch = global.originalFetch;
-    });
-
-    it('should return leaderboard data from the API', async () => {
-        const mockLeaderboardData = {
-            leaderboard: [
-                { playerId: '1', position: '1', score: '-10' },
-                { playerId: '2', position: '2', score: '-8' },
-            ],
-        };
-
-        // Set the return value of the mock fetch
-        mockFetch.returnValue = {
-            json: async () => mockLeaderboardData,
-        };
-
-        const result = await fetchLeaderboardFromAPI('475');
-        expect(result).toEqual(mockLeaderboardData);
-    });
-
-    it('should throw an error if the API call fails', async () => {
-        // Set the mock to throw an error
-        mockFetch.returnValue = Promise.reject(new Error('API call failed'));
-
-        await expect(fetchLeaderboardFromAPI('475')).rejects.toThrow('API call failed');
-    });
-});
+    it.todo('should throw an error if database fetch fails')
+})

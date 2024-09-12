@@ -23,7 +23,7 @@ const AddPlayer: React.FC = () => {
 
       console.log('Player information submitted successfully');
     } catch (error) {
-      console.error('Error submitting player information:', error);
+      console.error('Error submitting player information:', error); 
     }
   };
 

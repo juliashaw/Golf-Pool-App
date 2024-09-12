@@ -1,9 +1,10 @@
 import Tournament from '../models/Tournament.mjs'
 import Player from '../models/Player.mjs'
+import {recalculateTeamPoints} from '../services/team.mjs'
 const API_KEY = process.env.API_KEY
 
 // Helper Functions
-export async function fetchTournamentsFromAPI() {
+export const fetchTournamentsFromAPI = async () => {
     const url = 'https://live-golf-data.p.rapidapi.com/schedule?orgId=1&year=2024';
     const options = {
         method: 'GET',
@@ -13,12 +14,22 @@ export async function fetchTournamentsFromAPI() {
         }
     };
 
-    const response = await fetch(url, options);
-    const data = await response.json();
-    return data.schedule;
+    try {
+        const response = await fetch(url, options);
+
+        if (!response || !response.ok) {
+            throw new Error(`Error fetching tournaments from external API`);
+        }
+
+        const data = await response.json();
+        return data
+    } catch (error) {
+        throw error
+        // console.error('Error in fetchTournamentsFromAPI:', error);
+    }
 }
 
-export async function fetchLeaderboardFromAPI(tournId) {
+export const fetchLeaderboardFromAPI = async (tournId) => {
     const url = `https://live-golf-data.p.rapidapi.com/leaderboard?orgId=1&tournId=${tournId}&year=2024`;
     const options = {
         method: 'GET',
@@ -28,17 +39,23 @@ export async function fetchLeaderboardFromAPI(tournId) {
         }
     };
 
-    const response = await fetch(url, options);
-    const data = await response.json();
-    return data;
+    try {
+        const response = await fetch(url, options);
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        // Re-throw the error to be handled by the calling function
+        throw new Error('API call failed: ' + error.message);
+    }
 }
 
-export function filterTournaments(tournaments) {
+export const filterTournaments = (tournaments) => {
     const marchFirst2024 = new Date('2024-03-01');
     return tournaments.filter(tournament => new Date(tournament.date.start) >= marchFirst2024);
 }
 
-export function initializeTournaments(filteredTournaments) {
+export const initializeTournaments = (filteredTournaments) => {
     const newTournaments = filteredTournaments.map(tournament => ({
         id: tournament.tournId,
         name: tournament.name,
@@ -51,14 +68,14 @@ export function initializeTournaments(filteredTournaments) {
     return newTournaments
 }
 
-export function determineDoublePoints(tournament) {
+export const determineDoublePoints = (tournament) => {
     const majorTournaments = ['THE PLAYERS Championship', 'Masters Tournament', 'PGA Championship', 'U.S. Open', 'The Open Championship', 'TOUR Championship'];
     return majorTournaments.includes(tournament.name);
 }
 
-export async function tournamentIsFinished(tournament) {
+export const tournamentIsFinished = async (tournament) => {
     const currentDate = new Date()
-    const tournamentEndDate = new Date(tournament.date.end)
+    const tournamentEndDate = new Date(tournament.dateEnd)
     tournamentEndDate.setHours(tournamentEndDate.getHours() + 28)   // add 28hr buffer since they play on the last day  
 
     if (currentDate > tournamentEndDate) {
@@ -73,27 +90,43 @@ export async function tournamentIsFinished(tournament) {
     }
 }
 
-export async function fetchAndProcessLeaderboard(tournament) {
-    const leaderboardData = await fetchLeaderboardFromAPI(tournament.id)
-    const leaderboardRows = leaderboardData.leaderboardRows
+export const fetchAndProcessLeaderboard = async (tournament) => {
+    try {
+        const leaderboardData = await fetchLeaderboardFromAPI(tournament.id)
+        const leaderboardRows = leaderboardData.leaderboardRows
 
-    await addNewPlayers(tournament, leaderboardRows)
-    await updatePlayers(tournament, leaderboardRows)
-    await recalculateTeamPoints()    
+        const formattedLeaderboardRows = leaderboardRows.map(row => ({
+            playerId: row.playerId,
+            name: `${row.firstName}` + " " + `${row.lastName}`,
+            position: row.position,
+            total: row.total
+        }));
 
-    return leaderboardRows
+        await addNewPlayers(formattedLeaderboardRows)
+        await updatePlayers(tournament, formattedLeaderboardRows)
+        await recalculateTeamPoints()    
+
+        return formattedLeaderboardRows
+    } catch (error) {
+        // console.error("Error in fetching and processing leaderboard:", error); TODO
+        throw new Error("Failed to fetch and process leaderboard.")
+    }
 }
 
-export async function updateTournamentWithLeaderboard(tournament, leaderboardRows) {
-    tournament.leaderboard = leaderboardRows.map(row => ({
-        player: row.playerId,
-        position: row.position,
-        total: row.total,
-    }))
-    await tournament.save();
+export const updateTournamentWithLeaderboard = async (tournament, leaderboardRows) => {
+    try {
+        tournament.leaderboard = leaderboardRows.map(row => ({
+            playerId: row.playerId,
+            position: row.position,
+            total: row.total,
+        }))
+        await tournament.save();
+    } catch (error) {
+        throw new Error('Failed to update tournament with leaderboard.')
+    }
 }
 
-export function calculatePoints(position) {
+export const calculatePoints = (position) => {
     const pointsTable = {
         1: 15,
         2: 12,
@@ -109,13 +142,13 @@ export function calculatePoints(position) {
     return pointsTable[position] || 0;
 }
 
-export function calculateAveragePointsForTie(positions) {
+export const calculateAveragePointsForTie = (positions) => {
     const totalPoints = positions.reduce((acc, pos) => acc + calculatePoints(pos), 0);
     return totalPoints / positions.length;
 };
 
 // Purpose: Calculate and distribute points based on the player's position, accounting for ties.
-export async function distributePoints(tournament, leaderboardRows) {
+export const distributePoints = async (tournament, leaderboardRows) => {
     try {
         const multiplier = tournament.doublePoints ? 2 : 1
 
@@ -179,14 +212,15 @@ export const fetchTournaments = async () => {
         } else {
             // No tournaments in the database. Fetch from external API, filter by startDate, 
             // then add to the database
-            const externalTournaments = await fetchTournamentsFromAPI()
+            const externalData = await fetchTournamentsFromAPI()
+            const externalTournaments = JSON.parse(externalData).schedule
             const filteredTournaments = filterTournaments(externalTournaments)
             const newTournaments = initializeTournaments(filteredTournaments)
             await Tournament.insertMany(newTournaments)
             return newTournaments
         }
     } catch (error) {
-        console.error('Error fetching tournaments:', error)
+        // console.error('Error fetching tournaments:', error) TODO
         throw error
     }
 }
@@ -199,7 +233,6 @@ export const fetchLeaderboard = async (id) => {
         if (!tournament) {
             throw new Error('Tournament not found')
         }
-
         if (!await tournamentIsFinished(tournament)) {
             // return tournament with message stating when leaderboard will be available
             return tournament 
@@ -213,7 +246,7 @@ export const fetchLeaderboard = async (id) => {
 
         return tournament 
     } catch (error) {
-        console.error('Error fetching leaderboard:', error)
+        // console.error('Error fetching leaderboard:', error) TODO
         throw error
     }
 }
